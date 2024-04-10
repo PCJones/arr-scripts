@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# Initialize logging function
 log() {
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
 }
 
-# Initialize an associative array for path mappings
 declare -A PATH_MAPPINGS
 
-# Function to read parameters from config file if present
 read_config() {
     if [[ -f "$1" ]]; then
         while IFS='=' read -r key value; do
@@ -27,7 +24,6 @@ read_config() {
     fi
 }
 
-# Function to apply path mappings to a given path
 apply_path_mappings() {
     local path="$1"
     for src in "${!PATH_MAPPINGS[@]}"; do
@@ -39,14 +35,13 @@ apply_path_mappings() {
     echo "$path"
 }
 
-
-# Default config file path
-CONFIG_FILE="radarr_config.conf"
+CONFIG_FILE="create-file-links-from-radarr-api.conf"
+# Read from config file
+read_config "$CONFIG_FILE"
 
 # Override with command-line arguments if provided
-while getopts ":c:u:k:d:s:r:m:" opt; do
+while getopts ":u:k:d:s:r:m:" opt; do
     case ${opt} in
-        c ) CONFIG_FILE=$OPTARG ;;
         u ) RADARR_URL=$OPTARG ;;
         k ) API_KEY=$OPTARG ;;
         d ) DESTINATION_FOLDER=$OPTARG ;;
@@ -55,12 +50,9 @@ while getopts ":c:u:k:d:s:r:m:" opt; do
         m ) IFS=',' read -r src dst <<< "$OPTARG"
             PATH_MAPPINGS["$src"]="$dst"
             ;;
-        \? ) log "Usage: cmd [-c config_file] [-u radarr_url] [-k api_key] [-d destination_folder] [-s use_symbolic_links] [-r dry_run] [-m path_mapping]"; exit ;;
+        \? ) log "Usage: cmd [-u radarr_url] [-k api_key] [-d destination_folder] [-s use_symbolic_links] [-r dry_run] [-m path_mapping]"; exit ;;
     esac
 done
-
-# Read from config file
-read_config "$CONFIG_FILE"
 
 # Validate mandatory parameters
 if [[ -z "$RADARR_URL" || -z "$API_KEY" || -z "$DESTINATION_FOLDER" || -z "$DRY_RUN" ]]; then
