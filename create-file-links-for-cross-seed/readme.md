@@ -19,7 +19,9 @@ Example
 ## Usage:
 
 `./create-file-links-from-radarr-api.sh [-c config_file] [-u radarr_url] [-k api_key] [-d destination_folder] [-s use_symbolic_links] [-r dry_run] [-m path_mapping]`
+
 or
+
 `./create-file-links-from-radarr-api.sh`
 
 and use the provided config file
