@@ -25,3 +25,8 @@ or
 `./create-file-links-from-radarr-api.sh`
 
 and use the provided config file
+
+## Reverse docker path mappings:
+For every path mapping provide this as argument or in the config file:
+
+`path_mapping=/data,/mnt/storage` (left side will be replaced by the right side)
