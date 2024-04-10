@@ -36,12 +36,11 @@ apply_path_mappings() {
 }
 
 CONFIG_FILE="create-file-links-from-radarr-api.conf"
-# Read from config file
-read_config "$CONFIG_FILE"
 
 # Override with command-line arguments if provided
-while getopts ":u:k:d:s:r:m:" opt; do
+while getopts ":c:u:k:d:s:r:m:" opt; do
     case ${opt} in
+        c ) CONFIG_FILE=$OPTARG ;;
         u ) RADARR_URL=$OPTARG ;;
         k ) API_KEY=$OPTARG ;;
         d ) DESTINATION_FOLDER=$OPTARG ;;
@@ -50,9 +49,12 @@ while getopts ":u:k:d:s:r:m:" opt; do
         m ) IFS=',' read -r src dst <<< "$OPTARG"
             PATH_MAPPINGS["$src"]="$dst"
             ;;
-        \? ) log "Usage: cmd [-u radarr_url] [-k api_key] [-d destination_folder] [-s use_symbolic_links] [-r dry_run] [-m path_mapping]"; exit ;;
+        \? ) log "Usage: cmd [-c config_file] [-u radarr_url] [-k api_key] [-d destination_folder] [-s use_symbolic_links] [-r dry_run] [-m path_mapping]"; exit ;;
     esac
 done
+
+# Read from config file
+read_config "$CONFIG_FILE"
 
 # Validate mandatory parameters
 if [[ -z "$RADARR_URL" || -z "$API_KEY" || -z "$DESTINATION_FOLDER" || -z "$DRY_RUN" ]]; then
