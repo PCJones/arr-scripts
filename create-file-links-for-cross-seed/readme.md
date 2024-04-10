@@ -1,6 +1,6 @@
 # create-file-links-for-cross-seed
 
-The purpose of this script is to create hard- or symlinks to recreate a folder and filenamestructure that enables cross-seed to match these files to torrents correctly as currently risky-matching without the original filename only supports torrents with a single file.
+The purpose of this script is to create hard- or symlinks to recreate a folder and filename structure that enables cross-seed to match these files to torrents correctly as currently risky-matching without the original filename only supports torrents with a single file.
 
 The script will use the Radarr API to find all your current movies/files and create a link for them with the original, "imported" filename.
 Example
